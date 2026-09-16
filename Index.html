@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 1st Anniversary My Love ❤️</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #fb7185;
+      --primary-dark: #e11d48;
+      --accent: #fff1f2;
+      --text: #4c0519;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #2a0813 50%, #4c0519 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Background Canvas */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4.5rem;
+      color: #fda4af;
+      text-shadow: 0 0 20px rgba(253, 164, 175, 0.6);
+      animation: pulse 2.5s infinite ease-in-out;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #fecdd3;
+      letter-spacing: 1px;
+    }
+
+    /* Counter Box */
+    .timer-container {
+      display: flex;
+      gap: 15px;
+      margin-top: 35px;
+    }
+
+    .timer-box {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 15px 20px;
+      border-radius: 16px;
+      text-align: center;
+      min-width: 75px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .timer-num {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #fb7185;
+      display: block;
+    }
+
+    .timer-label {
+      font-size: 0.75rem;
+      color: #fda4af;
+      text-transform: uppercase;
+    }
+
+    /* Envelope Interactive Section */
+    .envelope-section {
+      margin: 100px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .envelope {
+      width: 320px;
+      height: 220px;
+      background: #be123c;
+      border-radius: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.4s ease;
+    }
+
+    .envelope:hover {
+      transform: translateY(-5px) scale(1.02);
+    }
+
+    .envelope-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      color: #fff;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Glassmorphism Letter Card */
+    .letter-card {
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--text);
+      border-radius: 20px;
+      padding: 40px;
+      margin-top: 30px;
+      max-width: 650px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      display: none; /* Controlled by JS */
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    .letter-card h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.8rem;
+      color: #be123c;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .letter-body {
+      font-size: 1.1rem;
+      line-height: 1.9;
+      color: #4a5568;
+      white-space: pre-line;
+    }
+
+    /* Polaroid Gallery */
+    .gallery-title {
+      text-align: center;
+      font-family: 'Dancing Script', cursive;
+      font-size: 3rem;
+      color: #fda4af;
+      margin: 80px 0 30px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+    }
+
+    .polaroid {
+      background: #fff;
+      padding: 15px 15px 25px 15px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transform: rotate(calc(var(--r, 0) * 1deg));
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
+
+    .polaroid:hover {
+      transform: scale(1.08) rotate(0deg) translateY(-10px);
+      box-shadow: 0 20px 35px rgba(251, 113, 133, 0.4);
+      z-index: 5;
+    }
+
+    .polaroid img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .polaroid-caption {
+      font-family: 'Dancing Script', cursive;
+      color: #333;
+      text-align: center;
+      font-size: 1.4rem;
+      margin-top: 12px;
+    }
+
+    /* Timeline Section */
+    .timeline {
+      margin: 100px 0;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      background: rgba(253, 164, 175, 0.3);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      margin: 40px 0;
+      position: relative;
+      width: 50%;
+      padding: 0 30px;
+    }
+
+    .timeline-item.left { left: 0; text-align: right; }
+    .timeline-item.right { left: 50%; text-align: left; }
+
+    .timeline-content {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .timeline-date {
+      color: #fb7185;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    /* Scroll Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Keyframes */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title { font-size: 3.2rem; }
+      .timeline::before { left: 20px; }
+      .timeline-item { width: 100%; left: 0 !important; text-align: left !important; padding-left: 50px; }
+      .timer-container { gap: 8px; }
+      .timer-box { padding: 10px 12px; min-width: 60px; }
+      .timer-num { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="container">
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <h1 class="hero-title">Happy 1st Anniversary</h1>
+      <p class="hero-subtitle">365 Hari Bersama Orang Terfavorit di Dunia ✨</p>
+      
+      <!-- LIVE TIMER COUNTER -->
+      <div class="timer-container" id="timer">
+        <div class="timer-box">
+          <span class="timer-num" id="days">00</span>
+          <span class="timer-label">Hari</span>
+        </div>
+        <div class="timer-box">
+          <span class="timer-num" id="hours">00</span>
+          <span class="timer-label">Jam</span>
+        </div>
+        <div class="timer-box">
+          <span class="timer-num" id="minutes">00</span>
+          <span class="timer-label">Menit</span>
+        </div>
+        <div class="timer-box">
+          <span class="timer-num" id="seconds">00</span>
+          <span class="timer-label">Detik</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE ENVELOPE & LETTER -->
+    <section class="envelope-section reveal">
+      <p style="margin-bottom: 20px; color: #fda4af;">👇 Klik amplop di bawah untuk membuka suratnya 👇</p>
+      <div class="envelope-wrapper" onclick="openLetter()">
+        <div class="envelope" id="envelopeBtn">
+          <span class="envelope-text">Buka Surat Cinta 💌</span>
+        </div>
+      </div>
+
+      <div class="letter-card" id="letterCard">
+        <h2>Untuk Kamu, Sayangku</h2>
+        <div class="letter-body">
+Halo Manis,
+
+Nggak kerasa ya, perjalanan yang kita mulai satu tahun lalu udah sampai di titik ini. 365 hari penuh cerita, canda tawa, sedikit bumbu ngambek, tapi yang paling utama: **rasa syukur yang nggak pernah berhenti karena ada kamu di samping aku.**
+
+Terima kasih ya sudah jadi tempat pulang paling nyaman. Terima kasih sudah sabar ngadepin aku, dan selalu punya cara paling hangat untuk bikin hari-hariku terasa lebih indah.
+
+Semoga di tahun-tahun mendatang, kita bisa terus belajar bareng, makin dewasa bareng, dan menciptakan ribuan kenangan manis lainnya.
+
+Aku sayang kamu, hari ini, esok, dan seterusnya. ❤️
+
+*(Salam Hangat & Cinta,*
+*[Nama Kamu])*
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE MOMENTS -->
+    <section class="timeline">
+      <h2 class="gallery-title reveal">Jejak Momen Kita</h2>
+      
+      <div class="timeline-item left reveal">
+        <div class="timeline-content">
+          <div class="timeline-date">Hari Pertama Bertemu</div>
+          <p>Momen canggung di mana kita pertama kali tatap muka dan cerita berjam-jam tanpa kerasa.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item right reveal">
+        <div class="timeline-content">
+          <div class="timeline-date">Resmi Pacaran</div>
+          <p>Hari saat kita berdua sepakat buat jalan bareng dan saling melengkapi satu sama lain.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item left reveal">
+        <div class="timeline-content">
+          <div class="timeline-date">Trip Berdua Pertama</div>
+          <p>Perjalanan seru yang makin meyakinkan aku kalau kamu adalah partner hidup terbaik.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- POLAROID PHOTO GALLERY -->
+    <section class="reveal">
+      <h2 class="gallery-title">Galeri Kenangan</h2>
+      <div class="gallery-grid">
+        <div class="polaroid" style="--r: -4">
+          <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" alt="Foto 1">
+          <div class="polaroid-caption">Awal Cerita ❤️</div>
+        </div>
+        <div class="polaroid" style="--r: 3">
+          <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=500&q=80" alt="Foto 2">
+          <div class="polaroid-caption">Kencan Favorit ✨</div>
+        </div>
+        <div class="polaroid" style="--r: -2">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=500&q=80" alt="Foto 3">
+          <div class="polaroid-caption">Tetap Senyum Ya! 😊</div>
+        </div>
+      </div>
+    </section>
+
+    <footer style="text-align: center; margin: 100px 0 30px; color: #fda4af; font-size: 0.9rem;">
+      Forever & Always ♡
+    </footer>
+  </div>
+
+  <script>
+    // 1. LIVE TIME COUNTER
+    // GANTI TANGGAL JADIAN KAMU DI SINI (Format: YYYY-MM-DDTHH:MM:SS)
+    const startDate = new Date("2025-09-16T00:00:00"); 
+
+    function updateCounter() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+      document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+      document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+      document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+    }
+    setInterval(updateCounter, 1000);
+    updateCounter();
+
+    // 2. ENVELOPE OPEN FUNCTION
+    function openLetter() {
+      const letter = document.getElementById('letterCard');
+      const btn = document.getElementById('envelopeBtn');
+      btn.style.transform = "scale(0.8) rotate(5deg)";
+      btn.style.opacity = "0.5";
+      setTimeout(() => {
+        letter.style.display = 'block';
+        letter.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
+
+    // 3. SCROLL REVEAL ANIMATION
+    window.addEventListener('scroll', reveal);
+    function reveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveals[i].getBoundingClientRect().top;
+        const revealPoint = 100;
+
+        if (revealTop < windowHeight - revealPoint) {
+          reveals[i].classList.add('active');
+        }
+      }
+    }
+    reveal();
+
+    // 4. MOUSE SPARKLE / HEART TRAIL EFEK
+    document.addEventListener('mousemove', function(e) {
+      if (Math.random() < 0.15) { // Frekuensi munculnya hati saat kursor bergerak
+        const heart = document.createElement('div');
+        heart.innerHTML = '💖';
+        heart.style.position = 'fixed';
+        heart.style.left = e.clientX + 'px';
+        heart.style.top = e.clientY + 'px';
+        heart.style.fontSize = Math.random() * 15 + 10 + 'px';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '9999';
+        heart.style.transition = 'all 1s ease-out';
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.style.transform = `translateY(-50px) scale(1.5)`;
+          heart.style.opacity = '0';
+        }, 50);
+
+        setTimeout(() => { heart.remove(); }, 1050);
+      }
+    });
+
+    // 5. BACKGROUND CANVAS PARTICLES
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedY = Math.random() * 0.8 + 0.2;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+      update() {
+        this.y -= this.speedY;
+        if (this.y < 0) {
+          this.y = canvas.height;
+          this.x = Math.random() * canvas.width;
+        }
+      }
+      draw() {
+        ctx.fillStyle = `rgba(253, 164, 175, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 50; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  </script>
+</body>
+</html>
